@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('categories', CategoryController::class);
 Route::get('/categories/{id}/products', [CategoryController::class, 'showProducts']);
+Route::patch('/categories/{id}/{enableValue}', [CategoryController::class, 'setEnable']);
+
+Route::resource('images', ImageController::class);
+Route::get('/images/{id}/products', [ImageController::class, 'showProducts']);
+Route::patch('/images/{id}/{enableValue}', [ImageController::class, 'setEnable']);

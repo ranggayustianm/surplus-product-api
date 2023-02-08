@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 
 class CategoryController extends Controller
 {
-    const NOT_FOUND_MESSAGE = 'Category not found';
+    const CATEGORY_VALIDATION_RULES = [
+        'name' => 'required',
+        'enable' => 'required',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +20,28 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::latest()->where('enable', 1)->paginate(10);
+        return $this->doPagination(Category::class);
+    }
+
+    /**
+     * Set "enable" field to true/false.
+     *
+     * @param  int $id
+     * @param  bool $enableValue
+     * @return \Illuminate\Http\Response
+     */
+    public function setEnable($id, $enableValue)
+    {
+        if($enableValue !== "enable" && $enableValue !== "disable"){
+            return $this->errorMessage("Invalid request", 400);
+        }   
+
+        $image = $this->getItem(Category::class, $id);
+        if(!($image)) {
+            return $this->categoryNotFound($id);
+        }
+
+        return $this->changeEnableValue($image, ($enableValue === 'enable'), 'Category');
     }
 
     /**
@@ -30,9 +52,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validationErrors = $this->validateRequest($request);
+        $validationErrors = $this->validateRequest($request, self::CATEGORY_VALIDATION_RULES);
         if(!empty($validationErrors)) {
-            return response()->json($validationErrors, 404);
+            return $this->errorMessage("Request validation failed", 400, $validationErrors);
         }
 
         try {
@@ -40,11 +62,7 @@ class CategoryController extends Controller
             $category = Category::create($request->all());
             DB::commit();
 
-            return [         
-                "message" => "New category has been created.",
-                "status" => 1,
-                "data" => $category
-            ];
+            return $this->successMessage("New category has been created.", $category);
         } catch (\Throwable $th) {
             $this->WriteLog(
                 'Failed to create the category because an exception has occurred.',
@@ -64,9 +82,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = $this->getCategory($id);
+        $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return response()->json(['error' => self::NOT_FOUND_MESSAGE], 404);
+            return $this->categoryNotFound($id);
         }
 
         return $category;
@@ -80,14 +98,14 @@ class CategoryController extends Controller
      */
     public function showProducts($id)
     {
-        $category = $this->getCategory($id);
+        $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return response()->json(['error' => self::NOT_FOUND_MESSAGE], 404);
+            return $this->categoryNotFound($id);
         }
 
         $products = $category->products()->get();
         if($products->isEmpty()) {
-            return response()->json(['error' => "No products in $category->name category."], 404);
+            return $this->errorMessage("No products in $category->name category.", 404);
         }
 
         return $products;
@@ -102,14 +120,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = $this->getCategory($id);
+        $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return response()->json(['error' => self::NOT_FOUND_MESSAGE], 404);
+            return $this->categoryNotFound($id);
         }
 
-        $validationErrors = $this->validateRequest($request);
+        $validationErrors = $this->validateRequest($request, self::CATEGORY_VALIDATION_RULES);
         if(!empty($validationErrors)) {
-            return response()->json($validationErrors, 404);
+            return $this->errorMessage("Request validation failed", 400, $validationErrors);
         }
 
         try {
@@ -126,11 +144,7 @@ class CategoryController extends Controller
             throw $th;
         }
 
-        return [
-            "msg" => "Category updated successfully",
-            "status" => 1,
-            "data" => $category,
-        ];
+        return $this->successMessage("Category updated successfully", $category);
     }
 
     /**
@@ -141,13 +155,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = $this->getCategory($id);
+        $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return response()->json(['error' => self::NOT_FOUND_MESSAGE], 404);
+            return $this->categoryNotFound($id);
         }
 
         try {
             DB::beginTransaction();
+            $category->products()->detach();
             $category->delete();
             DB::commit();
         } catch (\Throwable $th) {
@@ -160,53 +175,11 @@ class CategoryController extends Controller
             throw $th;
         }
      
-        return [
-            "msg" => "Category deleted successfully",
-            "status" => 1,
-            "data" => $category,
-        ];
+        return $this->successMessage("Category deleted successfully", $category);
     }
 
-    /**
-     * Get one category from database
-     * 
-     * @param int $id
-     * @return \App\Models\Category
-     */
-    private function getCategory($id, $isEnabledOnly = true)
+    private function categoryNotFound($id)
     {
-        $category = Category::where('id', $id)
-                            ->where('enable', $isEnabledOnly)
-                            ->first();
-
-        return $category;
-    }
-
-    /**
-     * Validate the incoming request
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return array $errorMsg
-     */
-    private function validateRequest(Request $request)
-    {
-        $errorMsg = [];
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'enable' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            $this->WriteLog(
-                'Request validation in Category failed because the incoming request failed to satisfy the rules.',
-                $validator->errors()->toArray(),
-                'error'
-            );
-            $errorMsg = [
-                'error' => 'BadRequest',
-                'details' => $validator->errors()
-            ];
-        } 
-        return $errorMsg;
+        return $this->errorMessage('Category '.$id.' not found in the database', 404);
     }
 }
