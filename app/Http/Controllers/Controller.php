@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    protected const PRODUCT_NOT_FOUND_MESSAGE = 'Image not found in the database';   
 
     /**
      * Get one item from database according to $modelClass inherited from Illuminate\Database\Eloquent\Model
