@@ -34,9 +34,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->doPagination(Product::class);
+        return $this->doPagination(Product::class, $request);
     }
 
     /**

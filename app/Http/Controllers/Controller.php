@@ -36,9 +36,18 @@ class Controller extends BaseController
     /**
      * Return the paginated items according to $modelClass inherited from Illuminate\Database\Eloquent\Model
      */
-    protected function doPagination($modelClass)
+    protected function doPagination($modelClass, Request $request)
     {
-        return $modelClass::latest()->paginate(10);
+        $otherRequests = $request->except('page');
+
+        $pageSize = $request->has('size') ? $request->size : 10;
+        $items = $modelClass::latest()->paginate($pageSize);
+
+        foreach($otherRequests as $key => $otherRequest) {
+            $items->appends([$key => $otherRequest]);
+        }
+
+        return $items;
     }
 
     /**
