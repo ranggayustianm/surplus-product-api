@@ -183,4 +183,12 @@ class Controller extends BaseController
 
         return $errorMsg;
     }
+
+    /**
+     * Outputs the item not found error message to client
+     */
+    protected function itemNotFound($itemType, $id)
+    {
+        return $this->errorMessage("$itemType $id not found in the database", 404);
+    }
 }

@@ -54,7 +54,7 @@ class ProductController extends Controller
 
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound();
+            return $this->itemNotFound('Product', $id);
         }
 
         return $this->changeEnableValue($product, ($enableValue === 'enable'), 'Product');
@@ -113,7 +113,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound();
+            return $this->itemNotFound('Product', $id);
         }
 
         return $product;
@@ -129,7 +129,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound();
+            return $this->itemNotFound('Product', $id);
         }
 
         $images = $product->images()->get();
@@ -150,7 +150,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound();
+            return $this->itemNotFound('Product', $id);
         }
 
         $categories = $product->categories()->get();
@@ -172,7 +172,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound($id);
+            return $this->itemNotFound('Product', $id);
         }
 
         $validationErrors = $this->validateRequest($request, self::SET_IMAGE_VALIDATION_RULES);
@@ -214,7 +214,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound($id);
+            return $this->itemNotFound('Product', $id);
         }
 
         $validationErrors = $this->validateRequest($request, self::SET_CATEGORY_VALIDATION_RULES);
@@ -256,7 +256,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound($id);
+            return $this->itemNotFound('Product', $id);
         }
 
         $validationErrors = $this->validateRequest($request, self::PRODUCT_VALIDATION_RULES);
@@ -291,7 +291,7 @@ class ProductController extends Controller
     {
         $product = $this->getItem(Product::class, $id);
         if(!($product)) {
-            return $this->productNotFound();
+            return $this->itemNotFound('Product', $id);
         }
         
         try {
@@ -312,10 +312,5 @@ class ProductController extends Controller
         }
      
         return $this->successMessage("Product deleted successfully", $product);
-    }
-
-    private function productNotFound()
-    {
-        return $this->errorMessage('Product not found in the database', 404);
     }
 }

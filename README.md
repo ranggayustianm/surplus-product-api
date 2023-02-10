@@ -16,7 +16,7 @@ php artisan migrate --seed
 
 ## Running the Project
 
-1. To start the development server, run php artisan serve in your terminal.
+1. To start the development server, run `php artisan serve` in your terminal.
 2. The API will now be accessible at http://localhost:8000.
 Examples of the API usage is accessible by importing the JSON file named `Surplus Product API.postman_collection.json` in Postman. The JSON file is located at the root of this project.
 

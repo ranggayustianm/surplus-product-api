@@ -39,7 +39,7 @@ class ImageController extends Controller
 
         $image = $this->getItem(Image::class, $id);
         if(!($image)) {
-            return $this->imageNotFound();
+            return $this->itemNotFound('Image', $id);
         }
 
         return $this->changeEnableValue($image, ($enableValue === 'enable'), 'Image');
@@ -98,7 +98,7 @@ class ImageController extends Controller
     {
         $image = $this->getItem(Image::class, $id);
         if(!($image)) {
-            return $this->imageNotFound();
+            return $this->itemNotFound('Image', $id);
         }
 
         return $image;
@@ -114,7 +114,7 @@ class ImageController extends Controller
     {
         $image = $this->getItem(Image::class, $id);
         if(!($image)) {
-            return $this->imageNotFound();
+            return $this->itemNotFound('Image', $id);
         }
 
         $products = $image->products()->get();
@@ -137,7 +137,7 @@ class ImageController extends Controller
     {
         $image = $this->getItem(Image::class, $id);
         if(!($image)) {
-            return $this->imageNotFound();
+            return $this->itemNotFound('Image', $id);
         }
 
         $validationRules = self::IMAGE_VALIDATION_RULES;
@@ -189,7 +189,7 @@ class ImageController extends Controller
     {
         $image = $this->getItem(Image::class, $id);
         if(!($image)) {
-            return $this->imageNotFound();
+            return $this->itemNotFound('Image', $id);
         }
 
         try {
@@ -211,10 +211,5 @@ class ImageController extends Controller
         }
      
         return $this->successMessage("Image deleted successfully", $image);
-    }
-
-    private function imageNotFound()
-    {
-        return $this->errorMessage('Image not found in the database', 404);
     }
 }

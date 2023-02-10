@@ -38,7 +38,7 @@ class CategoryController extends Controller
 
         $image = $this->getItem(Category::class, $id);
         if(!($image)) {
-            return $this->categoryNotFound($id);
+            return $this->itemNotFound('Category', $id);
         }
 
         return $this->changeEnableValue($image, ($enableValue === 'enable'), 'Category');
@@ -84,7 +84,7 @@ class CategoryController extends Controller
     {
         $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return $this->categoryNotFound($id);
+            return $this->itemNotFound('Category', $id);
         }
 
         return $category;
@@ -100,7 +100,7 @@ class CategoryController extends Controller
     {
         $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return $this->categoryNotFound($id);
+            return $this->itemNotFound('Category', $id);
         }
 
         $products = $category->products()->get();
@@ -122,7 +122,7 @@ class CategoryController extends Controller
     {
         $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return $this->categoryNotFound($id);
+            return $this->itemNotFound('Category', $id);
         }
 
         $validationErrors = $this->validateRequest($request, self::CATEGORY_VALIDATION_RULES);
@@ -157,7 +157,7 @@ class CategoryController extends Controller
     {
         $category = $this->getItem(Category::class, $id);
         if(!($category)) {
-            return $this->categoryNotFound($id);
+            return $this->itemNotFound('Category', $id);
         }
 
         try {
@@ -176,10 +176,5 @@ class CategoryController extends Controller
         }
      
         return $this->successMessage("Category deleted successfully", $category);
-    }
-
-    private function categoryNotFound($id)
-    {
-        return $this->errorMessage('Category '.$id.' not found in the database', 404);
     }
 }
