@@ -23,11 +23,16 @@ Examples of the API usage is accessible by importing the JSON file named `Surplu
 ## API Endpoints
 ### Category
 
-| Endpoint | Description | Parameters
-| ------ | ------ | ------ |
-| GET /api/categories | Get a list of categories with pagination | page: integer<br>The current category ID<br> size: integer<br>The amount of categories per page to be displayed
-| GET /api/categories/{id} | Get one category | id: integer
-| GET /api/categories/{id}/products | Get list of products of a category | id: integer
+| Endpoint | Description | Request Body Type | Parameters
+| ------ | ------ | ------ | ------ |
+| GET /api/categories | Get a list of categories with pagination | Url Query | `page: integer`<br>The current category ID<br><br> `size: integer`<br>The amount of categories per page to be displayed
+| GET /api/categories/{id} | Get one category | Url Query | `id: integer`<br>The current category ID
+| GET /api/categories/{id}/products | Get list of products of a category | Url Query | `id: integer`<br>The current category ID
+| POST /api/categories | Create new category | JSON Body | `name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
+| PUT /api/categories/{id} | Update an existing category | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current category ID<br><br>`name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
+| DELETE /api/categories/{id} | Delete a category | Url Query | `id: integer`<br>The current category ID
+| PATCH /api/categories/{id}/enable | Enable a category | Url Query | `id: integer`<br>The current category ID
+| PATCH /api/categories/{id}/disable | Disable a category | Url Query | `id: integer`<br>The current category ID
 
 
 ## Conclusion
