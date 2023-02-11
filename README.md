@@ -25,14 +25,27 @@ Examples of the API usage is accessible by importing the JSON file named `Surplu
 
 | Endpoint | Description | Request Body Type | Parameters
 | ------ | ------ | ------ | ------ |
-| GET /api/categories | Get a list of categories with pagination | Url Query | `page: integer`<br>The current category ID<br><br> `size: integer`<br>The amount of categories per page to be displayed
-| GET /api/categories/{id} | Get one category | Url Query | `id: integer`<br>The current category ID
-| GET /api/categories/{id}/products | Get list of products of a category | Url Query | `id: integer`<br>The current category ID
-| POST /api/categories | Create new category | JSON Body | `name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
-| PUT /api/categories/{id} | Update an existing category | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current category ID<br><br>`name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
-| DELETE /api/categories/{id} | Delete a category | Url Query | `id: integer`<br>The current category ID
-| PATCH /api/categories/{id}/enable | Enable a category | Url Query | `id: integer`<br>The current category ID
-| PATCH /api/categories/{id}/disable | Disable a category | Url Query | `id: integer`<br>The current category ID
+| `GET /api/categories` | Get a list of categories with pagination | Url Query | `page: integer`<br>The current category ID<br><br> `size: integer`<br>The amount of categories per page to be displayed
+| `GET /api/categories/{id}` | Get one category | Url Query | `id: integer`<br>The current category ID
+| `GET /api/categories/{id}/products` | Get list of products of a category | Url Query | `id: integer`<br>The current category ID
+| `POST /api/categories` | Create new category | JSON Body | `name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
+| `PUT /api/categories/{id}` | Update an existing category | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current category ID<br><br>`name: string`<br>The name of the new category<br><br>`enable: boolean`<br>Is this enabled?
+| `DELETE /api/categories/{id}` | Delete a category | Url Query | `id: integer`<br>The current category ID
+| `PATCH /api/categories/{id}/enable` | Enable a category | Url Query | `id: integer`<br>The current category ID
+| `PATCH /api/categories/{id}/disable` | Disable a category | Url Query | `id: integer`<br>The current category ID
+
+### Image
+
+| Endpoint | Description | Request Body Type | Parameters
+| ------ | ------ | ------ | ------ |
+| `GET /api/images` | Get a list of images with pagination | Url Query | `page: integer`<br>The current image ID<br><br> `size: integer`<br>The amount of images per page to be displayed
+| `GET /api/images/{id}` | Get one image | Url Query | `id: integer`<br>The current image ID
+| `GET /api/images/{id}/products` | Get list of products of a image | Url Query | `id: integer`<br>The current image ID
+| `POST /api/images` | Create new image | Form Data | `name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file[]: image|mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (can be multiple files) with max size 2048 KB
+| `PUT /api/images/{id}`<br>Because of PHP limitations, this is accessed by `POST /api/images/{id}?_method=PUT` | Update an existing image | Url Query (id)<br>Form Data (others) | `id: integer`<br>The current image ID<br><br>`name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file: image|mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (only one file) with max size 2048 KB
+| `DELETE /api/images/{id}` | Delete an image. The image file itself will be deleted as well | Url Query | `id: integer`<br>The current image ID
+| `PATCH /api/images/{id}/enable` | Enable an image | Url Query | `id: integer`<br>The current image ID
+| `PATCH /api/images/{id}/disable` | Disable an image | Url Query | `id: integer`<br>The current image ID
 
 
 ## Conclusion
