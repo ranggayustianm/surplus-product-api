@@ -26,6 +26,10 @@ class Controller extends BaseController
      */
     protected function getItem($modelClass, $id, $enabledValueOnly = false)
     {
+        if($id < 1) {
+            return $this->errorMessage("ID must be greater than 0.", 400);
+        } 
+
         $itemQuery = $modelClass::where('id', $id);
         if ($enabledValueOnly)
             $itemQuery = $itemQuery->where('enable', $enabledValueOnly);
@@ -41,8 +45,11 @@ class Controller extends BaseController
         $otherRequests = $request->except('page');
 
         $pageSize = $request->has('size') ? $request->size : 10;
-        $items = $modelClass::latest()->paginate($pageSize);
+        if($pageSize < 1) {
+            return $this->errorMessage("Page size must be greater than 0.", 400);
+        } 
 
+        $items = $modelClass::latest()->paginate($pageSize);
         foreach($otherRequests as $key => $otherRequest) {
             $items->appends([$key => $otherRequest]);
         }

@@ -21,7 +21,7 @@ class ImageController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->doPagination(Image::class);
+        return $this->doPagination(Image::class, $request);
     }
 
     /**

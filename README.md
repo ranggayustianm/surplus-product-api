@@ -20,6 +20,16 @@ php artisan migrate --seed
 2. The API will now be accessible at http://localhost:8000.
 Examples of the API usage is accessible by importing the JSON file named `Surplus Product API.postman_collection.json` in Postman. The JSON file is located at the root of this project.
 
+## API Endpoints
+### Category
+
+| Endpoint | Description | Parameters
+| ------ | ------ | ------ |
+| GET /api/categories | Get a list of categories with pagination | page: integer<br>The current category ID<br> size: integer<br>The amount of categories per page to be displayed
+| GET /api/categories/{id} | Get one category | id: integer
+| GET /api/categories/{id}/products | Get list of products of a category | id: integer
+
+
 ## Conclusion
 
 You are now set up and ready to start developing with the Surplus Product API project! If you have any questions or issues, please do not hesitate to reach out.

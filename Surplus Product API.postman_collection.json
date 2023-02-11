@@ -488,7 +488,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/products?page=1",
+							"raw": "http://127.0.0.1:8000/api/products?page=1&size=5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -505,6 +505,10 @@
 								{
 									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "5"
 								}
 							]
 						}
