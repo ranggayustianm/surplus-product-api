@@ -40,12 +40,28 @@ Examples of the API usage is accessible by importing the JSON file named `Surplu
 | ------ | ------ | ------ | ------ |
 | `GET /api/images` | Get a list of images with pagination | Url Query | `page: integer`<br>The current image ID<br><br> `size: integer`<br>The amount of images per page to be displayed
 | `GET /api/images/{id}` | Get one image | Url Query | `id: integer`<br>The current image ID
-| `GET /api/images/{id}/products` | Get list of products of a image | Url Query | `id: integer`<br>The current image ID
-| `POST /api/images` | Create new image | Form Data | `name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file[]: image - mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (can be multiple files) with max size 2048 KB
-| `PUT /api/images/{id}`<br>Because of PHP limitations, this is accessed by `POST /api/images/{id}?_method=PUT` | Update an existing image | Url Query (id)<br>Form Data (others) | `id: integer`<br>The current image ID<br><br>`name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file: image - mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (only one file) with max size 2048 KB
+| `GET /api/images/{id}/products` | Get list of products of an image | Url Query | `id: integer`<br>The current image ID
+| `POST /api/images` | Create new image | Form Data | `name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file[]: image - mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (can be multiple files) with max size 2048 KB. Required
+| `PUT /api/images/{id}`<br>Because of PHP limitations, this is accessed by `POST /api/images/{id}?_method=PUT` | Update an existing image | Url Query (id)<br>Form Data (others) | `id: integer`<br>The current image ID<br><br>`name: string`<br>The name of the new image<br><br>`enable: boolean`<br>Is this enabled?<br><br>`file: image - mime:jpeg,png,jpg,gif,svg`<br>The file to be uploaded (only one file) with max size 2048 KB. Can be ignored.
 | `DELETE /api/images/{id}` | Delete an image. The image file itself will be deleted as well | Url Query | `id: integer`<br>The current image ID
 | `PATCH /api/images/{id}/enable` | Enable an image | Url Query | `id: integer`<br>The current image ID
 | `PATCH /api/images/{id}/disable` | Disable an image | Url Query | `id: integer`<br>The current image ID
+
+### Product
+
+| Endpoint | Description | Request Body Type | Parameters
+| ------ | ------ | ------ | ------ |
+| `GET /api/products` | Get a list of products with pagination | Url Query | `page: integer`<br>The current product ID<br><br> `size: integer`<br>The amount of products per page to be displayed
+| `GET /api/products/{id}` | Get one product | Url Query | `id: integer`<br>The current product ID
+| `GET /api/products/{id}/images` | Get list of images of a product | Url Query | `id: integer`<br>The current product ID
+| `GET /api/products/{id}/categories` | Get list of categories of a product | Url Query | `id: integer`<br>The current product ID
+| `POST /api/products` | Create new product | JSON Body | `name: string`<br>The name of the new product<br><br>`description: string`<br>The description of a product<br><br>`enable: boolean`<br>Is this enabled?<br><br>`image_ids: integer[]`<br>Array of valid image IDs (optional)<br><br>`category_ids: integer[]`<br>Array of valid category IDs (optional)
+| `PUT /api/products/{id}` | Update an existing product | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current product ID<br><br>`name: string`<br>The name of the new product<br><br>`enable: boolean`<br>Is this enabled?
+| `PUT /api/products/{id}/images` | Update an images of a product | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current product ID<br><br>`image_ids: integer[]`<br>Array of valid image IDs
+| `PUT /api/products/{id}/categories` | Update a categories of a product | Url Query (id)<br>JSON Body (others) | `id: integer`<br>The current product ID<br><br>`category_ids: integer[]`<br>Array of valid category IDs
+| `DELETE /api/products/{id}` | Delete a product | Url Query | `id: integer`<br>The current product ID
+| `PATCH /api/products/{id}/enable` | Enable a product | Url Query | `id: integer`<br>The current product ID
+| `PATCH /api/products/{id}/disable` | Disable a product | Url Query | `id: integer`<br>The current product ID
 
 
 ## Conclusion
